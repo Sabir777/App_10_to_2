@@ -1,4 +1,4 @@
-#include "App_ns.h"
+ï»¿#include "App_ns.h"
 
 CApp::CApp() {
 	using std::wstring;
@@ -10,7 +10,7 @@ CApp::CApp() {
 	}
 	catch(const std::exception& e){
 		string expt_data = e.what();
-		MessageBox(nullptr, wstring(begin(expt_data), end(expt_data)).c_str(), L"Îøèáêà", MB_ICONERROR | MB_OK);
+		MessageBox(nullptr, wstring(begin(expt_data), end(expt_data)).c_str(), L"ÐžÑˆÐ¸Ð±ÐºÐ°", MB_ICONERROR | MB_OK);
 		ExitProcess(EXIT_FAILURE);
 	}
 }
@@ -38,7 +38,7 @@ void CApp::init_native_window_obj() {
 	wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
 	wc.hIcon = LoadIcon(nullptr, IDI_APPLICATION);
 	wc.hIconSm = LoadIcon(nullptr, IDI_APPLICATION);
-	wc.hInstance = GetModuleHandle(nullptr); //GetModuleHandle âîçâðàùàåò äåñêðèïòîð ôàéëà, èñïîëüçóåìîãî äëÿ ñîçäàíèÿ âûçûâàþùåãî ïðîöåññà.
+	wc.hInstance = GetModuleHandle(nullptr); //GetModuleHandle Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‰Ð°ÐµÑ‚ Ð´ÐµÑÐºÑ€Ð¸Ð¿Ñ‚Ð¾Ñ€ Ñ„Ð°Ð¹Ð»Ð°, Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÐµÐ¼Ð¾Ð³Ð¾ Ð´Ð»Ñ ÑÐ¾Ð·Ð´Ð°Ð½Ð¸Ñ Ð²Ñ‹Ð·Ñ‹Ð²Ð°ÑŽÑ‰ÐµÐ³Ð¾ Ð¿Ñ€Ð¾Ñ†ÐµÑÑÐ°.
 	wc.lpfnWndProc = CApp::application_proc;
 	wc.lpszClassName = this->m_szClassName.c_str();
 	wc.lpszMenuName = nullptr;
@@ -99,7 +99,7 @@ LRESULT CApp::window_proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 				GetWindowText(this->m_hwndEdit, &text[0], MAX_PATH);
 
 				if (text.empty()) {
-					MessageBox(this->m_hwndEdit, L"Ââåäèòå ÷èñëî!", L"Èíôîðìàöèÿ", MB_ICONINFORMATION | MB_OK);
+					MessageBox(this->m_hwndEdit, L"Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ‡Ð¸ÑÐ»Ð¾!", L"Ð˜Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸Ñ", MB_ICONINFORMATION | MB_OK);
 					break;
 				}
 
@@ -107,7 +107,7 @@ LRESULT CApp::window_proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 				SetWindowText(this->m_hwndEdit, text.c_str());
 			}
 			catch (...) {
-				MessageBox(this->m_hwnd, L"×èñëî ïðåâûøàåò 2 áàéòà!", L"Ïðåäóïðåæäåíèå", MB_ICONWARNING | MB_OK);
+				MessageBox(this->m_hwnd, L"Ð§Ð¸ÑÐ»Ð¾ Ð¿Ñ€ÐµÐ²Ñ‹ÑˆÐ°ÐµÑ‚ 2 Ð±Ð°Ð¹Ñ‚Ð°!", L"ÐŸÑ€ÐµÐ´ÑƒÐ¿Ñ€ÐµÐ¶Ð´ÐµÐ½Ð¸Ðµ", MB_ICONWARNING | MB_OK);
 				}
 			}
 			break;
@@ -126,7 +126,7 @@ LRESULT CApp::window_proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 
 void CApp::create_native_controls() {
-	this->m_hwndButton = CreateWindowEx(0, L"BUTTON", L"Ïåðåâåñòè", 
+	this->m_hwndButton = CreateWindowEx(0, L"BUTTON", L"ÐŸÐµÑ€ÐµÐ²ÐµÑÑ‚Ð¸", 
 	WS_CHILD | BS_PUSHBUTTON | WS_VISIBLE, 56, 108, 238, 37, 
 	this->m_hwnd, reinterpret_cast<HMENU>(CApp::CTL_ID::CALCBUTTON_ID),
 	nullptr, nullptr);
