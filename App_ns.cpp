@@ -62,20 +62,17 @@ LRESULT CApp::window_proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			try {
 				std::wstring text{};
 				text.resize(MAX_PATH);
-				//wchar_t text[80]{};
 				GetWindowText(this->m_hwndEdit, &text[0], MAX_PATH);
-				//GetWindowText(this->m_hwndEdit, text, MAX_PATH);
 
-				//if (text.empty()) {
-				if (std::empty(text)) {
+				if (text.empty()) {
 					MessageBox(this->m_hwndEdit, L"Введите число!", L"Информация", MB_ICONINFORMATION | MB_OK);
 					break;
 				}
 
 				
-				//std::string bynary = std::bitset<16>(std::stoi(text)).to_string();
-				SetWindowText(this->m_hwndEdit, text);
-				//SetWindowText(this->m_hwndEdit, L"Залупа");
+				std::string bynary = std::bitset<16>(std::stoi(text)).to_string();
+				text = std::wstring(bynary.begin(), bynary.end());
+				SetWindowText(this->m_hwndEdit, text.c_str()); //выводит текст в поле ввода-вывода
 			}
 			catch (...) {
 				MessageBox(this->m_hwnd, L"Число превышает 2 байта!", L"Предупреждение", MB_ICONWARNING | MB_OK);
