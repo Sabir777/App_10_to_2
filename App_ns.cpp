@@ -10,7 +10,8 @@ CApp::CApp() {
 	}
 	catch(const std::exception& e){
 		string expt_data = e.what();
-		MessageBox(nullptr, wstring(begin(expt_data), end(expt_data)).c_str(), L"Ошибка", MB_ICONERROR | MB_OK);
+		MessageBox(nullptr, wstring(begin(expt_data), 
+		end(expt_data)).c_str(), L"Ошибка", MB_ICONERROR | MB_OK);
 		ExitProcess(EXIT_FAILURE);
 	}
 }
@@ -26,41 +27,6 @@ int CApp::Run() {
 
 	return static_cast<int>(msg.wParam);
 }
-
-void CApp::init_native_window_obj() {
-	//using std::runtime_error;
-	//using namespace std::string_literals;
-
-	WNDCLASSEX wc{ sizeof(WNDCLASSEX) };
-	wc.cbClsExtra = 0;
-	wc.cbWndExtra = 0;
-	wc.hbrBackground = reinterpret_cast<HBRUSH>(GetStockObject(WHITE_BRUSH));
-	wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
-	wc.hIcon = LoadIcon(nullptr, IDI_APPLICATION);
-	wc.hIconSm = LoadIcon(nullptr, IDI_APPLICATION);
-	wc.hInstance = GetModuleHandle(nullptr); //GetModuleHandle возвращает дескриптор файла, используемого для создания вызывающего процесса.
-	wc.lpfnWndProc = CApp::application_proc;
-	wc.lpszClassName = this->m_szClassName.c_str();
-	wc.lpszMenuName = nullptr;
-	wc.style = CS_VREDRAW | CS_HREDRAW;
-	
-	if (!RegisterClassEx(&wc))
-		throw std::runtime_error("Error, can't register main window class!");
-
-	RECT windowRC{ 0, 0, this->m_nAppWindth, this->m_nAppHeight };
-	AdjustWindowRect(&windowRC, WS_DLGFRAME | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZE, false);
-
-	this->m_hwnd = CreateWindowEx(0, this->m_szClassName.c_str(),
-	this->m_szAppName.c_str(), WS_DLGFRAME | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZE,
-	(GetSystemMetrics(SM_CXSCREEN) - windowRC.right) / 2, 
-	(GetSystemMetrics(SM_CYSCREEN) - windowRC.bottom) / 2,
-	windowRC.right, windowRC.bottom, nullptr, nullptr, nullptr, this);
-	
-	if (!this->m_hwnd)
-		throw std::runtime_error("Error, can't create main window!");
-
-}
-
 
 LRESULT CApp::application_proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	CApp* pApp;
@@ -103,8 +69,10 @@ LRESULT CApp::window_proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 					break;
 				}
 
+				
 				std::string bynary = std::bitset<16>(std::stoi(text)).to_string();
-				SetWindowText(this->m_hwndEdit, text.c_str());
+				text = std::wstring(bynary.begin(), bynary.end());
+				SetWindowText(this->m_hwndEdit, text.c_str()); //выводит текст в поле ввода-вывода
 			}
 			catch (...) {
 				MessageBox(this->m_hwnd, L"Число превышает 2 байта!", L"Предупреждение", MB_ICONWARNING | MB_OK);
@@ -134,7 +102,7 @@ void CApp::create_native_controls() {
 	if (!this->m_hwndButton)
 		throw std::runtime_error("Error, can't create button!");
 
-	this->m_hwndEdit = CreateWindowEx(WS_EX_CLIENTEDGE, L"EDIT", L"256",
+	this->m_hwndEdit = CreateWindowEx(WS_EX_CLIENTEDGE, L"EDIT", L"2567",
 	WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL, 56, 66, 238, 24, this->m_hwnd,
 	reinterpret_cast<HMENU>(CApp::CTL_ID::RESULTEDIT_ID), nullptr, nullptr);
 	if (!this->m_hwndEdit)
@@ -144,4 +112,38 @@ void CApp::create_native_controls() {
 	OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, L"Roboto");
 	SendMessage(this->m_hwndEdit, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
 	SendMessage(this->m_hwndButton, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
+}
+
+void CApp::init_native_window_obj() {
+	//using std::runtime_error;
+	//using namespace std::string_literals;
+
+	WNDCLASSEX wc{ sizeof(WNDCLASSEX) };
+	wc.cbClsExtra = 0;
+	wc.cbWndExtra = 0;
+	wc.hbrBackground = reinterpret_cast<HBRUSH>(GetStockObject(WHITE_BRUSH));
+	wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
+	wc.hIcon = LoadIcon(nullptr, IDI_APPLICATION);
+	wc.hIconSm = LoadIcon(nullptr, IDI_APPLICATION);
+	wc.hInstance = GetModuleHandle(nullptr); //GetModuleHandle возвращает дескриптор файла, используемого для создания вызывающего процесса.
+	wc.lpfnWndProc = CApp::application_proc;
+	wc.lpszClassName = this->m_szClassName.c_str();
+	wc.lpszMenuName = nullptr;
+	wc.style = CS_VREDRAW | CS_HREDRAW;
+
+	if (!RegisterClassEx(&wc))
+		throw std::runtime_error("Error, can't register main window class!");
+
+	RECT windowRC{ 0, 0, this->m_nAppWindth, this->m_nAppHeight };
+	AdjustWindowRect(&windowRC, WS_DLGFRAME | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZE, false);
+
+	this->m_hwnd = CreateWindowEx(0, this->m_szClassName.c_str(),
+		this->m_szAppName.c_str(), WS_DLGFRAME | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZE,
+		(GetSystemMetrics(SM_CXSCREEN) - windowRC.right) / 2,
+		(GetSystemMetrics(SM_CYSCREEN) - windowRC.bottom) / 2,
+		windowRC.right, windowRC.bottom, nullptr, nullptr, nullptr, this);
+
+	if (!this->m_hwnd)
+		throw std::runtime_error("Error, can't create main window!");
+
 }
