@@ -124,7 +124,7 @@ LRESULT CApp::window_proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
 
-/*
+
 void CApp::create_native_controls() {
 	this->m_hwndButton = CreateWindowEx(0, L"BUTTON", L"Перевести", 
 	WS_CHILD | BS_PUSHBUTTON | WS_VISIBLE, 56, 108, 238, 37, 
@@ -145,4 +145,3 @@ void CApp::create_native_controls() {
 	SendMessage(this->m_hwndEdit, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
 	SendMessage(this->m_hwndButton, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
 }
-*/
