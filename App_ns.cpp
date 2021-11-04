@@ -10,7 +10,8 @@ CApp::CApp() {
 	}
 	catch(const std::exception& e){
 		string expt_data = e.what();
-		MessageBox(nullptr, wstring(begin(expt_data), end(expt_data)).c_str(), L"Ошибка", MB_ICONERROR | MB_OK);
+		MessageBox(nullptr, wstring(begin(expt_data), 
+		end(expt_data)).c_str(), L"Ошибка", MB_ICONERROR | MB_OK);
 		ExitProcess(EXIT_FAILURE);
 	}
 }
@@ -61,15 +62,20 @@ LRESULT CApp::window_proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			try {
 				std::wstring text{};
 				text.resize(MAX_PATH);
+				//wchar_t text[80]{};
 				GetWindowText(this->m_hwndEdit, &text[0], MAX_PATH);
+				//GetWindowText(this->m_hwndEdit, text, MAX_PATH);
 
-				if (text.empty()) {
+				//if (text.empty()) {
+				if (std::empty(text)) {
 					MessageBox(this->m_hwndEdit, L"Введите число!", L"Информация", MB_ICONINFORMATION | MB_OK);
 					break;
 				}
 
-				std::string bynary = std::bitset<16>(std::stoi(text)).to_string();
-				SetWindowText(this->m_hwndEdit, text.c_str());
+				
+				//std::string bynary = std::bitset<16>(std::stoi(text)).to_string();
+				SetWindowText(this->m_hwndEdit, text);
+				//SetWindowText(this->m_hwndEdit, L"Залупа");
 			}
 			catch (...) {
 				MessageBox(this->m_hwnd, L"Число превышает 2 байта!", L"Предупреждение", MB_ICONWARNING | MB_OK);
@@ -99,7 +105,7 @@ void CApp::create_native_controls() {
 	if (!this->m_hwndButton)
 		throw std::runtime_error("Error, can't create button!");
 
-	this->m_hwndEdit = CreateWindowEx(WS_EX_CLIENTEDGE, L"EDIT", L"256",
+	this->m_hwndEdit = CreateWindowEx(WS_EX_CLIENTEDGE, L"EDIT", L"2567",
 	WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL, 56, 66, 238, 24, this->m_hwnd,
 	reinterpret_cast<HMENU>(CApp::CTL_ID::RESULTEDIT_ID), nullptr, nullptr);
 	if (!this->m_hwndEdit)
